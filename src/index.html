@@ -4,71 +4,306 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Todo list</title>
+    <title>FocusFlow - Task Manager</title>
     <link
-      href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,700,900&display=swap"
+      href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700&display=swap"
       rel="stylesheet"
     />
-   
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
 
   <body>
-    <h1 class="title">Stuff I need to do</h1>
-
-    <div class="all-tasks">
-      <h2 class="task-list-title">My lists</h2>
-      <ul class="task-list" data-lists></ul>
-
-      <form action="" data-new-list-form>
-        <input 
-          type="text"
-          class="new list"
-          data-new-list-input
-          placeholder="new list name"
-          aria-label="new list name"
-        />
-        <button class="btn create" aria-label="create new list">+</button>
-      </form>
-    </div>
-
-    <div class="todo-list" data-list-display-container>
-      <div class="todo-header">
-        <h2 class="list-title" data-list-title>YouTube</h2>
-        <p class="task-count" data-list-count>3 tasks remaining</p>
-      </div>
-
-      <div class="todo-body">
-        <div class="tasks" data-tasks></div>
-
-        <div class="new-task-creator">
-            <form action="" data-new-task-form>
-                <input 
-                  type="text"
-                  data-new-task-input
-                  class="new task"
-                  placeholder="new task name"
-                  aria-label="new task name"
-                />
-                <button class="btn create" aria-label="create new task">+</button>
-              </form>
-        </div>
-
-        <div class="delete-stuff">
-          <button class="btn delete" data-clear-complete-tasks-button>Clear completed tasks</button>
-          <button class="btn delete" data-delete-list-button>Delete list</button>
+    <!-- Header with App Stats -->
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">FocusFlow</h1>
+        <div class="app-stats">
+          <div class="streak-counter">
+            <i class="fas fa-fire"></i>
+            <span class="streak-number">0</span>
+            <span class="streak-text">day streak</span>
+          </div>
+          <div class="today-stats">
+            <span class="completed-count">0</span>/<span class="total-count"
+              >0</span
+            >
+            tasks
+          </div>
         </div>
       </div>
+    </header>
+
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="search-section">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search tasks..."
+            data-search-input
+          />
+        </div>
+
+        <div class="navigation">
+          <nav class="main-nav">
+            <a href="#" class="nav-item active" data-nav="today">
+              <i class="fas fa-calendar-day"></i>
+              <span>Today</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="upcoming">
+              <i class="fas fa-calendar-week"></i>
+              <span>Upcoming</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="completed">
+              <i class="fas fa-check-circle"></i>
+              <span>Completed</span>
+            </a>
+          </nav>
+        </div>
+
+        <div class="projects-section">
+          <h3 class="section-title">Projects</h3>
+          <ul class="projects-list" data-projects></ul>
+
+          <form class="new-project-form" data-new-project-form>
+            <input
+              type="text"
+              class="new-project-input"
+              data-new-project-input
+              placeholder="New project..."
+              aria-label="New project name"
+            />
+            <button
+              type="submit"
+              class="btn btn-icon"
+              aria-label="Create project"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="filters-section">
+          <h3 class="section-title">Filters</h3>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" data-filter="urgent" />
+              <span class="filter-tag urgent">Urgent</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-filter="blocked" />
+              <span class="filter-tag blocked">Blocked</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-filter="in-progress" />
+              <span class="filter-tag in-progress">In Progress</span>
+            </label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="content-header">
+          <div class="project-header">
+            <h2 class="project-title" data-project-title>Personal Tasks</h2>
+            <div class="project-stats" data-project-stats>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+              </div>
+              <span class="stats-text">0/0 tasks completed</span>
+            </div>
+          </div>
+
+          <div class="content-actions">
+            <button class="btn btn-outline" data-sort-button>
+              <i class="fas fa-sort"></i> Sort
+            </button>
+            <button class="btn btn-primary" data-new-task-button>
+              <i class="fas fa-plus"></i> New Task
+            </button>
+          </div>
+        </div>
+
+        <!-- Task List -->
+        <div class="tasks-container" data-tasks-container>
+          <div class="empty-state" data-empty-state>
+            <i class="fas fa-clipboard-list"></i>
+            <h3>No tasks yet</h3>
+            <p>Create your first task to get started!</p>
+          </div>
+
+          <div class="tasks-grid" data-tasks-grid></div>
+        </div>
+
+        <!-- Task Creation Form -->
+        <div
+          class="task-creation-panel"
+          data-task-form-panel
+          style="display: none"
+        >
+          <form class="task-form" data-task-form>
+            <div class="form-header">
+              <h3>Add New Task</h3>
+              <button type="button" class="btn-close" data-close-form>
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="task-title-input"
+                data-task-title
+                placeholder="What needs to be done?"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Due Date</label>
+                <input type="date" class="form-control" data-task-due-date />
+              </div>
+              <div class="form-group">
+                <label>Estimated Time</label>
+                <select class="form-control" data-task-time>
+                  <option value="15">15 min</option>
+                  <option value="30">30 min</option>
+                  <option value="60">1 hour</option>
+                  <option value="120">2 hours</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Category</label>
+              <select class="form-control" data-task-category>
+                <option value="personal">Personal</option>
+                <option value="work">Work</option>
+                <option value="health">Health</option>
+                <option value="creative">Creative</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Priority</label>
+              <div class="priority-options">
+                <label class="priority-option">
+                  <input
+                    type="radio"
+                    name="priority"
+                    value="low"
+                    data-task-priority
+                  />
+                  <span class="priority-badge low">Low</span>
+                </label>
+                <label class="priority-option">
+                  <input
+                    type="radio"
+                    name="priority"
+                    value="medium"
+                    data-task-priority
+                    checked
+                  />
+                  <span class="priority-badge medium">Medium</span>
+                </label>
+                <label class="priority-option">
+                  <input
+                    type="radio"
+                    name="priority"
+                    value="high"
+                    data-task-priority
+                  />
+                  <span class="priority-badge high">High</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" data-cancel-task>
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">Create Task</button>
+            </div>
+          </form>
+        </div>
+      </main>
     </div>
 
-   
+    <!-- Task Detail Modal -->
+    <div class="modal" data-task-modal style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 data-modal-title>Edit Task</h3>
+          <button class="btn-close" data-close-modal>
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Task details will be populated here -->
+        </div>
+      </div>
     </div>
-    <template id="task-template">
-      <div class="task">
-        <input type="checkbox" />
-        <label>
-          <span class="custom-checkbox"></span>
-        </label>
+
+    <!-- Templates -->
+    <template id="task-card-template">
+      <div class="task-card" data-task-card data-task-id>
+        <div class="task-header">
+          <div class="task-checkbox-container">
+            <input type="checkbox" class="task-checkbox" data-task-complete />
+            <span class="custom-checkbox"></span>
+          </div>
+
+          <div class="task-content">
+            <h4 class="task-title" data-task-title></h4>
+            <div class="task-meta">
+              <span class="task-category" data-task-category></span>
+              <span class="task-time" data-task-time></span>
+              <span class="task-due" data-task-due></span>
+            </div>
+          </div>
+
+          <div class="task-actions">
+            <button class="btn-icon" data-edit-task>
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-icon" data-delete-task>
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="task-progress" data-task-progress>
+          <div class="progress-bar">
+            <div class="progress-fill" data-progress-fill></div>
+          </div>
+          <span class="progress-text" data-progress-text>0%</span>
+        </div>
+
+        <div class="task-tags" data-task-tags></div>
       </div>
     </template>
+
+    <template id="project-item-template">
+      <li class="project-item" data-project-item data-project-id>
+        <div class="project-info">
+          <span class="project-icon" data-project-icon>📁</span>
+          <span class="project-name" data-project-name></span>
+        </div>
+        <div class="project-stats">
+          <span class="project-progress" data-project-progress>0%</span>
+          <span class="task-count" data-project-task-count>0/0</span>
+        </div>
+      </li>
+    </template>
+
+    <script src="script.js"></script>
   </body>
 </html>
